@@ -1,0 +1,61 @@
+// Linear Regression class
+class LinearRegression {
+  constructor() {
+    this.coefficients = {
+      intercept: 0,
+      slope: 0,
+    };
+  }
+
+  // Method to train the linear regression model
+  train(data) {
+    const n = data.length;
+    let sumX = 0;
+    let sumY = 0;
+    let sumXY = 0;
+    let sumX2 = 0;
+
+    // Calculate the sums of X, Y, XY, and X^2
+    for (const { x, y } of data) {
+      sumX += x;
+      sumY += y;
+      sumXY += x * y;
+      sumX2 += x * x;
+    }
+
+    // Calculate the slope (m)
+    const numerator = n * sumXY - sumX * sumY;
+    const denominator = n * sumX2 - sumX * sumX;
+    const slope = numerator / denominator;
+
+    // Calculate the intercept (b)
+    const intercept = (sumY - slope * sumX) / n;
+
+    // Update the coefficients
+    this.coefficients.intercept = intercept;
+    this.coefficients.slope = slope;
+  }
+
+  // Method to predict the output for a given input
+  predict(input) {
+    const { intercept, slope } = this.coefficients;
+    return intercept + slope * input;
+  }
+}
+
+// Example usage
+const data = [
+  { x: 1, y: 3 },
+  { x: 2, y: 5 },
+  { x: 3, y: 7 },
+  { x: 4, y: 9 },
+  { x: 5, y: 11 },
+];
+
+const linearRegression = new LinearRegression();
+linearRegression.train(data);
+
+const input = 6;
+const prediction = linearRegression.predict(input);
+
+console.log('Prediction:', prediction);
